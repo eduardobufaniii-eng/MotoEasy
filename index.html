@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#16181a">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" sizes="192x192" type="image/png">
+<link rel="icon" href="icons/icon-512.png" sizes="512x512" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Entregas">
+<title>Meu mês de entregas</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600&display=swap">
+<style>
+:root{--bg:#eceef0;--sf:#fff;--tx:#17191b;--t2:#5d6469;--bd:#d6dadd;--ac:#f2b705;--on:#17191b;--ok:#17803d;--okb:#dff3e6;--wa:#8a5a00;--wab:#fdf0c9;--er:#b3261e;--erb:#fbe0de;--nt:#e3e6e8;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121416;--sf:#1c1f22;--tx:#eceef0;--t2:#9aa1a6;--bd:#2c3135;--ok:#5fd18a;--okb:#16301f;--wa:#f2c14e;--wab:#3a2e0c;--er:#ff8a80;--erb:#3b1916;--nt:#262a2d}}
+:root[data-theme="dark"]{--bg:#121416;--sf:#1c1f22;--tx:#eceef0;--t2:#9aa1a6;--bd:#2c3135;--ok:#5fd18a;--okb:#16301f;--wa:#f2c14e;--wab:#3a2e0c;--er:#ff8a80;--erb:#3b1916;--nt:#262a2d}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+main{max-width:480px;margin:0 auto;padding:14px}
+.num,h1,h2{font-family:"Barlow Semi Condensed",system-ui,sans-serif}
+.top{display:flex;align-items:center;gap:10px;padding:4px 0 6px}
+.top h1{font-size:22px;font-weight:600;margin:0;line-height:1.1}
+.top .s{font-size:13px;color:var(--t2)}
+.top .k{margin-left:auto;text-align:right}
+.top .k b{font-size:20px;font-weight:600}
+.topbar2{display:flex;justify-content:flex-end;gap:14px;padding-bottom:10px}
+.hero{background:var(--ac);color:var(--on);border-radius:14px;padding:16px}
+.hero span{font-size:13px;font-weight:500}
+.hero b{display:block;font-size:44px;line-height:1.05;font-weight:600}
+.g{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px}
+.m{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:12px}
+.m span{display:block;font-size:12px;color:var(--t2)}
+.m b{display:block;font-size:22px;font-weight:600;margin-top:1px}
+h2{font-size:17px;font-weight:600;margin:22px 0 8px}
+.f{margin-top:10px}
+.f:first-child{margin-top:0}
+.f label{display:block;font-size:12px;line-height:1.3;color:var(--t2);margin-bottom:3px;min-height:28px}
+input{width:100%;height:42px;padding:0 10px;font:inherit;color:var(--tx);background:var(--sf);border:1px solid var(--bd);border-radius:10px}
+input:focus-visible,button:focus-visible{outline:2px solid var(--ac);outline-offset:1px}
+.btn{width:100%;height:46px;margin-top:12px;font:inherit;font-weight:600;color:var(--on);background:var(--ac);border:0;border-radius:10px}
+.sm{height:34px;padding:0 12px;font:inherit;font-size:13px;color:var(--tx);background:var(--nt);border:0;border-radius:8px}
+.it{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:12px;margin-bottom:8px}
+.r{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.t2{font-size:13px;color:var(--t2)}
+.bd{font-size:12px;font-weight:600;padding:2px 9px;border-radius:8px;white-space:nowrap}
+.ok{background:var(--okb);color:var(--ok)}.wa{background:var(--wab);color:var(--wa)}.er{background:var(--erb);color:var(--er)}
+.bar{height:7px;border-radius:4px;background:var(--nt);overflow:hidden;margin:9px 0 6px}.bar div{height:100%}
+.err{font-size:13px;color:var(--er);min-height:18px;margin-top:6px}
+.row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--bd)}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--sf);border-top:1px solid var(--bd);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));display:grid;grid-template-columns:repeat(6,1fr);gap:2px;z-index:5}
+nav button{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;font:inherit;font-size:11px;color:var(--t2);background:none;border:0;border-radius:10px}
+nav button.on{color:var(--tx);font-weight:600;background:var(--nt)}
+nav svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.pg{display:none}.pg.on{display:block}
+.chip{height:36px;padding:0 13px;border-radius:18px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);font:inherit;font-size:13px}
+.chip.on{background:var(--ac);color:var(--on);border-color:var(--ac);font-weight:600}
+select{width:100%;height:42px;padding:0 10px;font:inherit;color:var(--tx);background:var(--sf);border:1px solid var(--bd);border-radius:10px}
+.wr{display:flex;gap:8px;flex-wrap:wrap}
+.hint{background:var(--nt);border-radius:12px;padding:12px;font-size:13px;color:var(--t2);margin-top:10px}
+.hint b{color:var(--tx)}
+a.sm{display:inline-flex;align-items:center;text-decoration:none;color:var(--tx)}
+.lk{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.selectbtn{width:100%;height:42px;padding:0 10px;font:inherit;text-align:left;color:var(--tx);background:var(--sf);border:1px solid var(--bd);border-radius:10px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.selectbtn.ph{color:var(--t2)}
+.selectbtn svg{width:18px;height:18px;flex:none;stroke:var(--t2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.selwrap{position:relative}
+.menu{position:absolute;left:0;right:0;top:calc(100% + 4px);background:var(--sf);border:1px solid var(--bd);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.18);max-height:260px;overflow-y:auto;z-index:20;padding:4px}
+.menu .mi{display:block;width:100%;text-align:left;background:none;border:0;padding:11px 10px;font:inherit;color:var(--tx);border-radius:8px}
+.menu .mi:active,.menu .mi:hover{background:var(--nt)}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;z-index:50;padding:20px}
+.modal-card{background:var(--sf);border-radius:16px;padding:18px;max-width:360px;width:100%;max-height:90vh;overflow-y:auto}
+.linklike{background:none;border:0;padding:0;font:inherit;font-size:13px;color:var(--t2);text-decoration:underline}
+.garchip{position:relative;display:inline-block}
+.garchip .xbtn{position:absolute;top:-7px;right:-7px;width:18px;height:18px;border-radius:50%;background:var(--er);color:#fff;font-size:11px;line-height:18px;text-align:center;border:0;padding:0}
+.alert{border-radius:12px;padding:12px;margin-bottom:8px;border-left:4px solid var(--wa);background:var(--wab)}
+.alert.er{border-left-color:var(--er);background:var(--erb)}
+.alert b{color:var(--tx)}
+</style>
+</head>
+<body>
+
+<div id="authScreen" class="modal-overlay" style="display:none;background:var(--bg)">
+  <div class="modal-card">
+    <h1 style="margin:0 0 4px">Meu mês de entregas</h1>
+    <p class="t2" style="margin:0 0 14px">Entre ou crie uma conta para guardar seus dados neste celular.</p>
+    <div class="f" style="margin-top:0"><label for="authEmail">E-mail</label><input type="email" id="authEmail" autocomplete="username"></div>
+    <div class="f"><label for="authSenha">Senha</label><input type="password" id="authSenha" autocomplete="current-password"></div>
+    <div id="authErr" class="err"></div>
+    <button class="btn" id="bEntrar">Entrar</button>
+    <button class="btn" id="bCriar" style="background:var(--nt);color:var(--tx);margin-top:8px">Criar conta</button>
+    <p class="t2" style="margin-top:14px">Seus dados ficam só neste celular e neste navegador, separados por conta. Isto não é um login com servidor de verdade — veja os detalhes que te expliquei no chat.</p>
+  </div>
+</div>
+
+<div id="onboardModal" class="modal-overlay" style="display:none">
+  <div class="modal-card">
+    <h2 style="margin-top:0">Como você vai usar o app?</h2>
+    <p class="t2">Isso ajusta as abas que aparecem para você.</p>
+    <button class="btn" id="obSim">Eu faço entregas por aplicativo</button>
+    <button class="btn" id="obNao" style="background:var(--nt);color:var(--tx);margin-top:8px">Só quero controlar meus gastos</button>
+  </div>
+</div>
+
+<div id="app" style="display:none">
+<main>
+<div class="top">
+  <div style="min-width:0"><h1 id="hAp"></h1><div class="s" id="hMod"></div></div>
+  <div class="k"><b class="num" id="hKm"></b><div class="s">km atual</div></div>
+</div>
+<div class="topbar2">
+  <button class="linklike" id="bTrocarPerfil">Trocar tipo de uso</button>
+  <button class="linklike" id="bLogout">Sair</button>
+</div>
+
+<section class="pg on" data-p="resumo">
+  <div class="r" style="margin-top:0">
+    <span class="t2" id="notifStatus"></span>
+    <button class="sm" id="bNotif">Ativar lembretes</button>
+  </div>
+  <div id="alertasTop" style="margin-top:8px"></div>
+  <div id="rBlockEntregador">
+    <div class="hero" id="hero"><span id="hl">Lucro do mês até agora</span><b class="num" id="rL"></b></div>
+    <div class="g">
+      <div class="m"><span>Ganho bruto</span><b class="num" id="rB"></b></div>
+      <div class="m"><span>Gastos</span><b class="num" id="rG"></b></div>
+      <div class="m"><span>Sobra por hora</span><b class="num" id="rH"></b></div>
+      <div class="m"><span>Sobra por km</span><b class="num" id="rK"></b></div>
+      <div class="m"><span>Dias trabalhados</span><b class="num" id="rD"></b></div>
+      <div class="m"><span>Sobra média por dia</span><b class="num" id="rM"></b></div>
+    </div>
+    <div class="t2" style="margin-top:8px">Sobra = ganho menos combustível, manutenção e gastos do dia, antes dos gastos fixos.</div>
+    <h2>Por plataforma</h2>
+    <div id="rp"></div>
+    <h2>Quanto preciso ganhar</h2>
+    <div class="f" style="margin-top:0"><label for="meta">Lucro que quero no mês (R$, opcional)</label><input type="number" id="meta" inputmode="decimal"></div>
+    <div class="wr" id="dpmChips" style="margin-top:10px">
+      <button type="button" class="chip" data-dpm="auto">Calcular os dias automaticamente</button>
+      <button type="button" class="chip" data-dpm="manual">Definir os dias manualmente</button>
+    </div>
+    <div class="f" id="dpManualWrap" style="display:none"><label for="dp">Dias que vou trabalhar</label><input type="number" id="dp" inputmode="decimal"></div>
+    <div class="bar" style="margin-top:12px"><div id="mb" style="background:var(--ok);width:0"></div></div>
+    <div id="mt" class="t2"></div>
+  </div>
+  <div id="rBlockGestor" style="display:none">
+    <div class="hero"><span>Gastos do mês até agora</span><b class="num" id="rG3"></b></div>
+  </div>
+  <h2>Reserva de emergência</h2>
+  <div id="rr"></div>
+  <h2>Atenção nas peças</h2>
+  <div id="al"></div>
+</section>
+
+<section class="pg" data-p="dias">
+  <h2 style="margin-top:4px">Registrar o dia</h2>
+  <div class="f" style="margin-top:0"><label for="dData">Data</label><input type="date" id="dData"></div>
+  <div class="g">
+    <div class="f"><label for="dHIni">Hora que começou</label><input type="time" id="dHIni"></div>
+    <div class="f"><label for="dHFim">Hora que terminou</label><input type="time" id="dHFim"></div>
+  </div>
+  <div class="t2" id="dHoraCalc" style="margin-top:6px"></div>
+  <div class="g">
+    <div class="f"><label for="dKm">Km rodados</label><input type="number" id="dKm" inputmode="decimal"></div>
+    <div class="f"><label for="dExt">Gorjeta e bônus (R$)</label><input type="number" id="dExt" value="0" inputmode="decimal"></div>
+  </div>
+  <h2>Plataformas do dia</h2>
+  <div class="wr" id="dChips"></div>
+  <div class="g" style="margin-top:10px;grid-template-columns:1fr auto;align-items:end">
+    <div class="f" style="margin-top:0"><label for="dNew">Outra plataforma</label><input type="text" id="dNew" placeholder="Nome do aplicativo"></div>
+    <button class="sm" id="bNew" style="height:42px">Adicionar</button>
+  </div>
+  <div id="dRows" style="margin-top:10px"></div>
+  <h2>Combustível do dia</h2>
+  <div class="wr" id="dFt" style="margin-bottom:10px"></div>
+  <div class="g" style="margin-top:0">
+    <div class="f"><label for="dFu">Quanto abasteceu (R$)</label><input type="number" id="dFu" inputmode="decimal" placeholder="Deixe vazio para estimar"></div>
+    <div class="f"><label for="dAv">Outro gasto do dia (R$)</label><input type="number" id="dAv" value="0" inputmode="decimal"></div>
+  </div>
+  <button class="btn" id="bDia">Salvar dia</button>
+  <div id="eDia" class="err"></div>
+  <h2>Dias do mês</h2>
+  <div id="lDias"></div>
+</section>
+
+<section class="pg" data-p="moto">
+  <h2 style="margin-top:4px">Minhas motos</h2>
+  <div class="wr" id="garList"></div>
+  <div class="g" style="margin-top:10px;grid-template-columns:1fr auto;align-items:end">
+    <div class="f" style="margin-top:0"><label for="novaMotoNome">Nova moto (apelido)</label><input type="text" id="novaMotoNome" placeholder="Ex.: Moto de passeio"></div>
+    <button class="sm" id="bNovaMoto" style="height:42px">Adicionar</button>
+  </div>
+  <h2>Dados da moto selecionada</h2>
+  <div class="f" style="margin-top:0"><label for="mAp">Apelido da moto</label><input type="text" id="mAp"></div>
+  <div class="g">
+    <div class="f"><label for="mMod">Modelo</label><input type="text" id="mMod"></div>
+    <div class="f"><label for="mAno">Ano</label><input type="number" id="mAno" inputmode="numeric"></div>
+  </div>
+  <div class="f"><label for="mKm">Km atual</label><input type="number" id="mKm" inputmode="decimal"></div>
+  <h2>Combustível</h2>
+  <div class="wr" id="mCb"></div>
+  <div id="gG" class="g" style="margin-top:10px">
+    <div class="f" style="grid-column:1/-1;margin-top:0"><label for="mPg">Preço da gasolina (R$/L)</label><input type="number" id="mPg" step="0.01" inputmode="decimal"></div>
+    <div class="f"><label for="mGmin">Gasolina: consumo mínimo (km/L)</label><input type="number" id="mGmin" inputmode="decimal"></div>
+    <div class="f"><label for="mGmax">Gasolina: consumo máximo (km/L)</label><input type="number" id="mGmax" inputmode="decimal"></div>
+  </div>
+  <div id="gA" class="g" style="margin-top:10px">
+    <div class="f" style="grid-column:1/-1;margin-top:0"><label for="mPa">Preço do álcool (R$/L)</label><input type="number" id="mPa" step="0.01" inputmode="decimal"></div>
+    <div class="f"><label for="mAmin">Álcool: consumo mínimo (km/L)</label><input type="number" id="mAmin" inputmode="decimal"></div>
+    <div class="f"><label for="mAmax">Álcool: consumo máximo (km/L)</label><input type="number" id="mAmax" inputmode="decimal"></div>
+  </div>
+  <p class="t2">O app usa a média entre o mínimo e o máximo. Os valores de partida são exemplos. Ajuste para a sua moto.</p>
+  <div id="mCmp" style="margin-top:10px"></div>
+  <h2>Óleo do motor</h2>
+  <div id="mOil"></div>
+  <div class="g" style="margin-top:8px">
+    <div class="f" style="margin-top:0"><label for="mOilMarca">Óleo que você usa — marca e linha (opcional)</label><input type="text" id="mOilMarca" placeholder="Ex.: Motul 5100"></div>
+    <div class="f"><label for="mOilVisc">Viscosidade</label><input type="text" id="mOilVisc" placeholder="Ex.: 20W-50"></div>
+  </div>
+  <h2>Manutenção por km</h2>
+  <div class="f" style="margin-top:0"><label for="mManu">Custo de manutenção (R$ por km)</label><input type="number" id="mManu" step="0.001" inputmode="decimal"></div>
+  <div class="hint">
+    <b>Como calcular.</b> Para cada peça que desgasta, divida o preço da troca pelos km que ela dura. Depois some tudo.<br><br>
+    Exemplos (valores inventados): óleo, R$ 40 a cada 3.000 km, dá R$ 0,013 por km. Pneu traseiro, R$ 220 a cada 15.000 km, dá R$ 0,015 por km. Somando os dois, são R$ 0,028 por km. Faça o mesmo com relação, pastilhas, filtros, vela e revisão.<br><br>
+    Mais fácil: na aba Peças, preencha o custo de cada troca. O app faz essa conta sozinho.
+  </div>
+  <div id="mCalc" style="margin-top:10px"></div>
+</section>
+
+<section class="pg" data-p="pecas">
+  <div id="lPecas" style="margin-top:4px"></div>
+  <h2>Adicionar peça ou revisão</h2>
+  <div class="f" style="margin-top:0"><label for="pNome">Nome</label><input type="text" id="pNome" placeholder="Corrente, bateria, pneu dianteiro"></div>
+  <div class="g">
+    <div class="f"><label for="pInt">Troca a cada (km)</label><input type="number" id="pInt" inputmode="decimal"></div>
+    <div class="f"><label for="pUlt">Última troca (km)</label><input type="number" id="pUlt" inputmode="decimal"></div>
+    <div class="f"><label for="pCus">Custo da troca (R$)</label><input type="number" id="pCus" inputmode="decimal"></div>
+    <div class="f"><label for="pData">Prazo em data</label><input type="date" id="pData"></div>
+  </div>
+  <div class="f"><label for="pLit">Litros usados na troca (para óleo)</label><input type="number" id="pLit" step="0.1" inputmode="decimal"></div>
+  <div id="pHint" class="t2" style="margin-top:4px"></div>
+  <button class="btn" id="bPeca">Adicionar à lista</button>
+  <div id="ePeca" class="err"></div>
+  <p class="t2">Use os intervalos do manual da sua moto. O custo é opcional e alimenta o cálculo de manutenção por km.</p>
+</section>
+
+<section class="pg" data-p="gastos">
+  <div id="lGas" style="margin-top:4px"></div>
+  <h2>Adicionar gasto</h2>
+  <div class="f selwrap" style="margin-top:0">
+    <label for="gNomeBtn">Nome do gasto</label>
+    <button type="button" class="selectbtn ph" id="gNomeBtn"><span id="gNomeTxt">Toque para escolher</span><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+    <div class="menu" id="gMenu" style="display:none"></div>
+    <input type="text" id="gNomeOutro" placeholder="Digite o nome do gasto" style="display:none;margin-top:8px">
+  </div>
+  <div class="g">
+    <div class="f"><label for="gVal">Valor (R$)</label><input type="number" id="gVal" inputmode="decimal"></div>
+    <div class="f"><label for="gFre">Com que frequência</label><select id="gFre"><option value="mes">Por mês</option><option value="semana">Por semana</option><option value="dia">Por dia trabalhado</option></select></div>
+  </div>
+  <div class="wr" id="parcToggle" style="margin-top:10px;display:none">
+    <button type="button" class="chip" data-parc="nao">Sem parcelas</button>
+    <button type="button" class="chip" data-parc="sim">Tem parcelas com vencimento</button>
+  </div>
+  <div id="parcFields" style="display:none">
+    <div class="g">
+      <div class="f"><label for="gParcTot">Total de parcelas</label><input type="number" id="gParcTot" inputmode="numeric"></div>
+      <div class="f"><label for="gParcPg">Já pagas</label><input type="number" id="gParcPg" inputmode="numeric"></div>
+    </div>
+    <div class="f"><label for="gParcDia">Dia do vencimento no mês (1 a 31)</label><input type="number" id="gParcDia" min="1" max="31" inputmode="numeric"></div>
+  </div>
+  <button class="btn" id="bGas">Adicionar gasto</button>
+  <div id="eGas" class="err"></div>
+  <h2>Resumo dos gastos do mês</h2>
+  <div id="gl2"></div>
+  <h2>Reserva de emergência</h2>
+  <div class="g" style="margin-top:0">
+    <div class="f" style="margin-top:0"><label for="rSaldo">Já guardado (R$)</label><input type="number" id="rSaldo" inputmode="decimal"></div>
+    <div class="f" style="margin-top:0"><label for="rV">Quanto vai guardar (R$)</label><input type="number" id="rV" inputmode="decimal"></div>
+  </div>
+  <div class="f"><label for="rPer">Guardar a cada</label><select id="rPer"><option value="dia">Dia trabalhado</option><option value="semana">Semana</option></select></div>
+  <div id="rr2" style="margin-top:10px"></div>
+</section>
+<section class="pg" data-p="perto">
+  <h2 style="margin-top:4px">Perto de você</h2>
+  <button class="btn" id="bLoc" style="margin-top:0">Usar minha localização</button>
+  <div id="locMsg" class="t2" style="margin-top:8px">Os links abaixo funcionam mesmo sem localização, usando o local do seu celular. A localização só serve para montar os links e não fica salva.</div>
+  <div id="pertoL" style="margin-top:10px"></div>
+  <div class="hint">Os preços dos combustíveis aparecem no Waze ou no Google Maps, quando os postos informam. O app não busca o preço de cada posto sozinho.</div>
+</section>
+</main>
+
+<nav>
+  <button data-t="resumo"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7"/><rect x="13" y="4" width="7" height="7"/><rect x="4" y="13" width="7" height="7"/><rect x="13" y="13" width="7" height="7"/></svg>Resumo</button>
+  <button data-t="dias"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>Dias</button>
+  <button data-t="moto"><svg viewBox="0 0 24 24"><circle cx="6" cy="16" r="3"/><circle cx="18" cy="16" r="3"/><path d="M6 16l4-7h5l3 7M10 9l-1-2H7"/></svg>Moto</button>
+  <button data-t="pecas"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg>Peças</button>
+  <button data-t="gastos"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg>Gastos</button>
+  <button data-t="perto"><svg viewBox="0 0 24 24"><path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Perto</button>
+</nav>
+</div>
+
+<script>
+/* ===== Contas (login local, sem servidor) ===== */
+var ACC_KEY='ent-accounts', CUR_KEY='ent-current', LEGACY_KEY='entregador-moto-v1';
+function dataKey(email){return 'entregador-moto-v2:'+email}
+function hashPw(s){var h=5381;for(var i=0;i<s.length;i++){h=((h*33)^s.charCodeAt(i))>>>0}return h.toString(16)}
+function loadAccounts(){try{return JSON.parse(localStorage.getItem(ACC_KEY)||'[]')}catch(e){return[]}}
+function saveAccounts(a){try{localStorage.setItem(ACC_KEY,JSON.stringify(a))}catch(e){}}
+function $(i){return document.getElementById(i)}
+
+function defaultMoto(){return {ap:'Minha moto',mod:'',ano:0,km:0,comb:'flex',pg:6.2,pa:4.2,gmin:30,gmax:35,amin:20,amax:25,manu:0.15,oil:{marca:'',visc:''},pecas:[]}}
+function defaultS(){return {profile:{tipo:null,onboarded:false},garagem:[defaultMoto()],motoIdx:0,plats:['iFood','99Food','Keeta','Rappi','Loggi','Particular'],gastos:[],res:{saldo:0,v:0,per:'dia'},meta:3000,dp:26,dpMode:'auto',dias:[],fuelDia:'gas',notif:{enabled:false,lastCheck:''}}}
+function migrate(o){var d=defaultS();if(!o||typeof o!=='object')return d;
+  if(Array.isArray(o.garagem)&&o.garagem.length){d.garagem=o.garagem.map(function(g){return Object.assign(defaultMoto(),g,{oil:Object.assign({marca:'',visc:''},g.oil||{}),pecas:Array.isArray(g.pecas)?g.pecas:[]})})}
+  else if(o.m){d.garagem=[Object.assign(defaultMoto(),o.m,{pecas:Array.isArray(o.pecas)?o.pecas:[]})]}
+  d.motoIdx=(typeof o.motoIdx==='number'&&o.motoIdx>=0&&o.motoIdx<d.garagem.length)?o.motoIdx:0;
+  ['plats','gastos','dias'].forEach(function(k){if(Array.isArray(o[k]))d[k]=o[k]});
+  if(o.res)d.res=Object.assign(d.res,o.res);
+  if(o.profile)d.profile=Object.assign(d.profile,o.profile);
+  ['meta','dp'].forEach(function(k){if(typeof o[k]==='number')d[k]=o[k]});
+  if(o.dpMode==='auto'||o.dpMode==='manual')d.dpMode=o.dpMode;
+  if(o.fuelDia)d.fuelDia=o.fuelDia;
+  if(o.notif)d.notif=Object.assign(d.notif,o.notif);
+  if(!Array.isArray(o.gastos)&&o.fx){[['Parcela ou aluguel','parc'],['Seguro e documentos','seg'],['Plano de celular','cel'],['MEI','mei'],['Outros fixos','out']].forEach(function(x){if(o.fx[x[1]]>0)d.gastos.push({n:x[0],v:o.fx[x[1]],f:'mes'})});if(o.ali>0)d.gastos.push({n:'Comida',v:o.ali,f:'dia'})}
+  d.dias.forEach(function(x){if(!x.pl)x.pl={iFood:{g:x.g||0,n:0}};if(!x.fu)x.fu={t:'gas',v:0}});
+  return d}
+function loadForEmail(email){var raw=null;try{raw=localStorage.getItem(dataKey(email))}catch(e){}
+  if(raw){try{return migrate(JSON.parse(raw))}catch(e){return defaultS()}}
+  var accs=loadAccounts();
+  if(accs.length<=1){try{var leg=localStorage.getItem(LEGACY_KEY);if(leg)return migrate(JSON.parse(leg))}catch(e){}}
+  return defaultS()}
+
+var S=null, CUR=null;
+function save(){if(!CUR)return;try{localStorage.setItem(dataKey(CUR),JSON.stringify(S))}catch(e){}}
+function M(){return S.garagem[S.motoIdx]||S.garagem[0]}
+
+/* ===== utilitários ===== */
+function iso(d){var a=d.getMonth()+1,b=d.getDate();return d.getFullYear()+'-'+(a<10?'0':'')+a+'-'+(b<10?'0':'')+b}
+function nv(x){var n=parseFloat(String(x).replace(',','.'));return isFinite(n)&&n>=0?n:0}
+function brl(n){return n.toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function fd(s){return s.slice(8,10)+'/'+s.slice(5,7)}
+
+/* ===== lógica do app ===== */
+var cur={},sel=[],pos=null;
+function cons(t){var m=M();return t=='alc'?(m.amin+m.amax)/2:(m.gmin+m.gmax)/2}
+function price(t){return t=='alc'?M().pa:M().pg}
+function dayT(){return M().comb=='flex'?S.fuelDia:M().comb}
+function calcHoras(){var a=$('dHIni').value,b=$('dHFim').value;if(!a||!b)return 0;
+  var ah=parseInt(a.slice(0,2),10),am=parseInt(a.slice(3,5),10),bh=parseInt(b.slice(0,2),10),bm=parseInt(b.slice(3,5),10);
+  if(!isFinite(ah)||!isFinite(bh))return 0;
+  var mins=(bh*60+bm)-(ah*60+am);if(mins<=0)mins+=24*60;
+  return Math.round((mins/60)*4)/4}
+function dcalc(x){var g=0,p;for(p in x.pl)g+=x.pl[p].g||0;var c=cons(x.fu.t),est=c>0?x.k/c*price(x.fu.t):0,fu=x.fu.v>0?x.fu.v:est,man=x.k*M().manu;return{g:g,b:g+x.e,fu:fu,man:man,l:g+x.e-fu-man-x.a}}
+function mes(){var m=iso(new Date()).slice(0,7);return S.dias.filter(function(x){return x.d.slice(0,7)===m})}
+function itM(i,n){return i.f=='mes'?i.v:i.f=='semana'?i.v*4.33:i.v*n}
+function tot(){var L=mes(),r={n:L.length,h:0,k:0,b:0,fu:0,man:0,av:0,P:{},it:0,itTD:0},d=new Date(),dm=new Date(d.getFullYear(),d.getMonth()+1,0).getDate(),dd=d.getDate();
+  L.forEach(function(x){var c=dcalc(x),p;r.h+=x.h;r.k+=x.k;r.b+=c.b;r.fu+=c.fu;r.man+=c.man;r.av+=x.a;
+    for(p in x.pl){var q=r.P[p]||(r.P[p]={g:0,d:0,n:0});q.g+=x.pl[p].g||0;q.n+=x.pl[p].n||0;q.d++}});
+  S.gastos.forEach(function(i){r.it+=itM(i,r.n);r.itTD+=i.f=='mes'?i.v*Math.min(1,dd/dm):i.f=='semana'?i.v*dd/7:i.v*r.n});
+  r.op=r.b-r.fu-r.man-r.av;r.g=r.fu+r.man+r.av+r.it;r.gTD=r.fu+r.man+r.av+r.itTD;r.l=r.b-r.gTD;return r}
+function manCalc(){var s=0,c=0;M().pecas.forEach(function(p){if(p.c>0&&p.i>0){s+=p.c/p.i;c++}});return{v:s,c:c}}
+function kmDia(){var t=tot();return t.n>0&&t.k>0?t.k/t.n:80}
+function st(p){var hk=p.i>0,rem=hk?p.u+p.i-M().km:null,dd=null;
+  if(p.d)dd=Math.round((new Date(p.d+'T00:00:00')-new Date(iso(new Date())+'T00:00:00'))/864e5);
+  var l=0;if((hk&&rem<=0)||(dd!==null&&dd<0))l=2;else if((hk&&rem<=300)||(dd!==null&&dd<=7))l=1;return{rem:rem,dd:dd,l:l}}
+function badge(l){return l==2?'<span class="bd er">Atrasada</span>':l==1?'<span class="bd wa">Em breve</span>':'<span class="bd ok">Em dia</span>'}
+function info(p,s){var a=[];
+  if(s.rem!==null)a.push(s.rem<=0?'passou '+Math.round(-s.rem)+' km':'faltam '+Math.round(s.rem)+' km, cerca de '+Math.max(1,Math.round(s.rem/kmDia()))+' dias');
+  if(s.dd!==null)a.push(s.dd<0?'prazo venceu há '+(-s.dd)+' dias':s.dd==0?'prazo é hoje':'prazo '+fd(p.d)+', em '+s.dd+' dias');
+  if(p.l>0)a.push(p.l+' L'+(p.c>0?', '+brl(p.c/p.l)+' por litro':''));if(p.c>0&&p.i>0)a.push(brl(p.c/p.i)+' por km');return a.join(' · ')}
+function ord(){return M().pecas.map(function(p,i){return{p:p,i:i,s:st(p)}}).sort(function(a,b){return b.s.l-a.s.l})}
+function rsv(t,dp){var r=S.res,d=new Date(),dm=new Date(d.getFullYear(),d.getMonth()+1,0).getDate(),rest=Math.max(dm-d.getDate(),0);
+  var mm=r.per=='dia'?r.v*dp:r.v*4.33,fut=r.per=='dia'?r.v*Math.max(dp-t.n,0):r.v*(rest/7);return{saldo:r.saldo,mm:mm,fim:r.saldo+fut}}
+function rsvHtml(t){var dp=effDp(t)||S.dp||26,q=rsv(t,dp),u=S.res.per=='dia'?'por dia trabalhado':'por semana';
+  if(!(S.res.v>0))return '<div class="t2">Informe quanto vai guardar para ver a previsão.</div>';
+  return '<div class="g" style="margin-top:0"><div class="m"><span>Guardado hoje</span><b class="num">'+brl(q.saldo)+'</b></div><div class="m"><span>Aporte por mês</span><b class="num">'+brl(q.mm)+'</b></div><div class="m" style="grid-column:1/-1;background:var(--okb)"><span style="color:var(--ok)">Previsão no fim do mês</span><b class="num" style="color:var(--ok)">'+brl(q.fim)+'</b></div></div><button class="btn" style="margin-top:10px" onclick="depositRes()">Guardei '+brl(S.res.v)+' agora</button><div class="t2" style="margin-top:6px">Mantendo '+brl(S.res.v)+' '+u+'. O botão soma esse valor ao que você já guardou.</div>'}
+function depositRes(){var r=S.res;if(!(r.v>0))return;r.saldo=(r.saldo||0)+r.v;var el=$('rSaldo');if(el)el.value=r.saldo;upd()}
+function parcStatus(i){if(!i.parc)return null;var total=i.parc.total,pagas=i.parc.pagas,dia=i.parc.diaVenc;
+  var restantes=Math.max(0,total-pagas);if(restantes<=0)return{restantes:0,diasFalta:null,l:0,valorRestante:0};
+  var hoje=new Date(),diaHoje=hoje.getDate(),diasFalta;
+  if(dia>=diaHoje)diasFalta=dia-diaHoje;else{var prox=new Date(hoje.getFullYear(),hoje.getMonth()+1,dia);diasFalta=Math.round((prox-new Date(hoje.getFullYear(),hoje.getMonth(),hoje.getDate()))/864e5)}
+  var l=diasFalta<=3?2:(diasFalta<=7?1:0);
+  return{restantes:restantes,diasFalta:diasFalta,l:l,valorRestante:restantes*i.v}}
+function pagarParcela(k){var i=S.gastos[k];if(!i||!i.parc)return;i.parc.pagas=Math.min(i.parc.total,i.parc.pagas+1);upd()}
+function collectAlerts(){var list=[];
+  ord().forEach(function(x){if(x.s.l>0)list.push({tipo:'peca',sev:x.s.l,nome:x.p.n,info:info(x.p,x.s)})});
+  S.gastos.forEach(function(i){var ps=parcStatus(i);if(ps&&ps.l>0)list.push({tipo:'parcela',sev:ps.l,nome:i.n,info:(ps.diasFalta<=0?'vence hoje ou já venceu':'faltam '+ps.diasFalta+' dias')+' · '+ps.restantes+' parcela(s) restante(s), '+brl(ps.valorRestante)})});
+  list.sort(function(a,b){return b.sev-a.sev});return list}
+function rAlertas(){var list=collectAlerts(),h='';
+  list.forEach(function(x){h+='<div class="alert'+(x.sev===2?' er':'')+'"><div class="r"><b>'+esc(x.nome)+'</b>'+(x.sev===2?'<span class="bd er">Urgente</span>':'<span class="bd wa">Atenção</span>')+'</div><div class="t2" style="margin-top:4px">'+esc(x.info)+'</div></div>'});
+  $('alertasTop').innerHTML=h;$('alertasTop').style.display=list.length?'block':'none';return list}
+function wantsNotify(){return S&&S.notif&&S.notif.enabled&&typeof Notification!=='undefined'&&Notification.permission==='granted'}
+function checkReminders(){if(!S||!wantsNotify())return;var list=collectAlerts(),today=iso(new Date());
+  if(S.notif.lastCheck===today)return;
+  if(list.length){try{new Notification('Meu mês de entregas',{body:list.length+' coisa(s) precisando de atenção: '+list.slice(0,3).map(function(x){return x.nome}).join(', ')+(list.length>3?'…':'')})}catch(e){}}
+  S.notif.lastCheck=today;save()}
+function updNotifUI(){var sup=typeof Notification!=='undefined';
+  if(!sup){$('notifStatus').textContent='Sem suporte a lembretes neste navegador.';$('bNotif').style.display='none';return}
+  if(Notification.permission==='denied'){$('notifStatus').textContent='Lembretes bloqueados nas permissões do navegador.';$('bNotif').style.display='none';return}
+  $('bNotif').style.display='inline-block';
+  $('notifStatus').textContent=S.notif.enabled?'Lembretes ativados (só funcionam com o app aberto)':'Lembretes desativados';
+  $('bNotif').textContent=S.notif.enabled?'Desativar':'Ativar lembretes'}
+$('bNotif').onclick=function(){if(S.notif.enabled){S.notif.enabled=false;updNotifUI();save();return}
+  if(typeof Notification==='undefined')return;
+  if(Notification.permission==='denied'){updNotifUI();return}
+  Notification.requestPermission().then(function(perm){S.notif.enabled=(perm==='granted');updNotifUI();save();
+    if(perm==='granted'){try{new Notification('Lembretes ativados',{body:'Vou avisar por aqui quando algo importante estiver vencendo, enquanto o app estiver aberto.'})}catch(e){}}})};
+setInterval(function(){checkReminders()},60*60*1000);
+document.addEventListener('visibilitychange',function(){if(!document.hidden)checkReminders()});
+var OIL=[
+ {k:['cg 160','cg160'],n:'Honda CG 160 (Start, Fan e Titan)',v:'SAE 10W-30, JASO MA, API SL ou superior',l:'cerca de 1,2 L no total (ficha técnica de terceiros, modelo 2016)',q:'óleo moto 10W30 JASO MA'},
+ {k:['xre 300','xre300'],n:'Honda XRE 300',v:'o manual de 2016 recomenda óleo genuíno Honda ou Mobil Super Moto Authentic 10W-30',l:null,q:'óleo moto 10W30'},
+ {k:['cg 125i','cg125i','125i fan'],n:'Honda CG 125i Fan',v:'o manual de 2016 recomenda Mobil Super Moto Authentic 10W-30',l:null,q:'óleo moto 10W30'}];
+function slug(q){return q.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
+function oilFor(){var m=(M().mod||'').toLowerCase().replace(/\s+/g,' ');if(!m)return null;for(var i=0;i<OIL.length;i++)for(var j=0;j<OIL[i].k.length;j++)if(m.indexOf(OIL[i].k[j])>-1)return OIL[i];return null}
+function offerQ(p){if(/[óo]leo/i.test(p.n)){var c=M().oil;if(c&&(c.marca||c.visc))return (c.marca+' '+c.visc).trim()+' moto';var o=oilFor();return o?o.q:'óleo para moto 4 tempos '+(M().mod||'')}return (p.n+' '+(M().mod||'')).trim()}
+function offerHtml(p){var q=offerQ(p);return '<div class="lk"><a class="sm" target="_blank" rel="noopener noreferrer" href="https://lista.mercadolivre.com.br/'+slug(q)+'">Ver no Mercado Livre</a><a class="sm" target="_blank" rel="noopener noreferrer" href="https://shopee.com.br/search?keyword='+encodeURIComponent(q)+'">Ver na Shopee</a></div><div class="t2" style="margin-top:4px">Abre a busca por "'+esc(q)+'". Compare os preços lá, o app não vê preço em tempo real.</div>'}
+function plan(t,dp){var F=0,vd;S.gastos.forEach(function(i){F+=itM(i,dp)});
+  if(t.n>0)vd=(t.fu+t.man+t.av)/t.n;else{var c=cons(dayT()),k=kmDia();vd=(c>0?k/c*price(dayT()):0)+k*M().manu}
+  return{F:F,vd:vd,need:S.meta+F+vd*dp}}
+function effDp(t){if(S.dpMode==='manual')return Math.max(0,S.dp||0);
+  var avg=t.n>0?t.b/t.n:0;if(avg<=0)return null;
+  var guess=Math.max(t.n,1);
+  for(var i=0;i<6;i++){var pl=plan(t,guess),d=Math.ceil(pl.need/avg);guess=Math.max(d,t.n,1)}
+  return guess}
+function rDpm(){document.querySelectorAll('#dpmChips button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-dpm')===S.dpMode)});
+  $('dpManualWrap').style.display=S.dpMode==='manual'?'block':'none'}
+function rRes(){var t=tot(),isGestor=S.profile.tipo==='gestor';
+  if(!isGestor){
+    $('rB').textContent=brl(t.b);$('rG').textContent=brl(t.gTD);
+    var neg=t.l<0;$('hl').textContent=neg?'Faltam para cobrir os gastos do mês':'Lucro do mês até agora';
+    $('rL').textContent=brl(Math.abs(t.l));$('hero').style.background=neg?'var(--nt)':'var(--ac)';$('hero').style.color=neg?'var(--tx)':'var(--on)';
+    $('rH').textContent=t.h>0?brl(Math.max(t.op,0)/t.h):'-';$('rK').textContent=t.k>0?brl(Math.max(t.op,0)/t.k):'-';
+    $('rD').textContent=String(t.n);$('rM').textContent=t.n>0?brl(Math.max(t.op,0)/t.n):'-';
+    var dp=effDp(t),h2;
+    if(dp===null){$('mb').style.width='0%';h2='Registre ao menos um dia de trabalho para eu calcular quantos dias você precisa automaticamente, ou toque em "Definir os dias manualmente" acima.'}
+    else{var pl=plan(t,dp),need=pl.need,pc=need>0?Math.max(0,Math.min(100,Math.round(t.b/need*100))):0;$('mb').style.width=pc+'%';
+      var avg=t.n>0?t.b/t.n:0,rest=Math.max(dp-t.n,0),rem=Math.max(need-t.b,0);
+      h2=(S.meta>0?'Para ter <b>'+brl(S.meta)+'</b> de lucro depois de todos os custos':'Sem meta definida: para só cobrir os custos do mês')+', você precisa ganhar <b>'+brl(need)+'</b> bruto no mês'+(S.dpMode==='auto'?(avg>0?', o que dá cerca de <b>'+dp+' dias</b> de trabalho no seu ritmo atual':''):', cerca de <b>'+brl(need/dp)+'</b> por dia em '+dp+' dias')+'.';
+      if(rem<=0)h2+='<br>Você já chegou nesse valor este mês.';
+      else if(rest>0)h2+='<br>Faltam '+brl(rem)+'. São '+brl(rem/rest)+' por dia nos '+rest+' dias que restam.';
+      else h2+='<br>Faltam '+brl(rem)+'. '+(S.dpMode==='auto'?'No seu ritmo médio, esse valor passa do mês — considere um lucro menor ou mais dias.':'Aumente os dias.');
+      h2+='<br><span style="font-size:12px">Custos considerados: gastos cadastrados, '+brl(pl.F)+' no mês, e '+brl(pl.vd)+' por dia trabalhado (combustível, manutenção e gastos do dia).</span>'}
+    $('mt').innerHTML=h2;
+    var ps=Object.keys(t.P).sort(function(a,b){return t.P[b].g-t.P[a].g}),h='',sum=0;ps.forEach(function(p){sum+=t.P[p].g});
+    if(!ps.length)h='<div class="t2">Registre um dia para ver o resumo por plataforma.</div>';
+    ps.forEach(function(p){var q=t.P[p],sh=sum>0?Math.round(q.g/sum*100):0;
+      h+='<div class="it"><div class="r"><b>'+esc(p)+'</b><b class="num" style="font-size:18px">'+brl(q.g)+'</b></div><div class="bar"><div style="width:'+sh+'%;background:var(--ac)"></div></div><div class="t2">'+sh+'% do total · '+q.d+' dias · média '+brl(q.g/q.d)+' por dia'+(q.n>0?' · '+q.n+' entregas, '+brl(q.g/q.n)+' por entrega':'')+'</div></div>'});
+    $('rp').innerHTML=h;
+  } else {
+    $('rG3').textContent=brl(t.gTD);
+  }
+  $('rr').innerHTML=rsvHtml(t);
+  var u=ord().filter(function(x){return x.s.l>0}).slice(0,3),a='';
+  if(!M().pecas.length)a='<div class="t2">Cadastre suas peças na aba Peças para receber avisos.</div>';
+  else if(!u.length)a='<div class="t2">Nenhuma peça precisando de troca agora.</div>';
+  u.forEach(function(x){a+='<div class="it"><div class="r"><div><b>'+esc(x.p.n)+'</b><div class="t2">'+info(x.p,x.s)+'</div></div>'+badge(x.s.l)+'</div>'+offerHtml(x.p)+'</div>'});
+  $('al').innerHTML=a}
+function rForm(){
+  $('dChips').innerHTML=S.plats.map(function(p){return '<button class="chip'+(sel.indexOf(p)>-1?' on':'')+'" data-p="'+esc(p)+'">'+esc(p)+'</button>'}).join('');
+  $('dRows').innerHTML=sel.map(function(p){var c=cur[p];return '<div class="it"><b>'+esc(p)+'</b><div class="g" style="margin-top:8px"><div class="f" style="margin-top:0"><label>Ganho (R$)</label><input type="number" inputmode="decimal" data-p="'+esc(p)+'" data-k="g" value="'+(c.g||'')+'"></div><div class="f" style="margin-top:0"><label>Entregas (opcional)</label><input type="number" inputmode="numeric" data-p="'+esc(p)+'" data-k="n" value="'+(c.n||'')+'"></div></div></div>'}).join('')}
+function rFuel(){
+  var fl=M().comb=='flex';
+  $('dFt').style.display=fl?'flex':'none';
+  $('dFt').innerHTML=[['gas','Gasolina'],['alc','Álcool']].map(function(x){return '<button class="chip'+(S.fuelDia==x[0]?' on':'')+'" data-f="'+x[0]+'">'+x[1]+'</button>'}).join('');
+  $('mCb').innerHTML=[['gas','Gasolina'],['alc','Álcool'],['flex','Flex']].map(function(x){return '<button class="chip'+(M().comb==x[0]?' on':'')+'" data-c="'+x[0]+'">'+x[1]+'</button>'}).join('');
+  $('gG').style.display=M().comb=='alc'?'none':'grid';$('gA').style.display=M().comb=='gas'?'none':'grid'}
+function rDias(){var L=mes().slice().sort(function(a,b){return a.d<b.d?1:-1}),h='';
+  if(!L.length)h='<div class="t2">Nenhum dia registrado neste mês. Salve o primeiro acima.</div>';
+  L.forEach(function(x){var i=S.dias.indexOf(x),c=dcalc(x),pl=Object.keys(x.pl).map(function(p){return esc(p)+' '+brl(x.pl[p].g||0)}).join(' · ');
+    h+='<div class="it"><div class="r"><b>'+fd(x.d)+'</b><b class="num" style="font-size:18px;color:'+(c.l<0?'var(--er)':'var(--ok)')+'">'+brl(c.l)+'</b></div><div class="t2" style="margin-top:4px">'+pl+(x.e>0?' · extra '+brl(x.e):'')+'</div><div class="r t2" style="margin-top:4px"><span>'+x.k+' km · '+String(x.h).replace('.',',')+' h · combustível '+brl(c.fu)+(x.fu.v>0?' (abastecido)':' (estimado)')+'</span><button class="sm" onclick="delD('+i+')">Apagar</button></div></div>'});
+  $('lDias').innerHTML=h}
+function rPec(){var h='';
+  ord().forEach(function(x){var p=x.p,s=x.s,u=p.i>0?Math.max(0,Math.min(1,(M().km-p.u)/p.i)):0,c=s.l==2?'var(--er)':s.l==1?'var(--wa)':'var(--ok)';
+    h+='<div class="it"><div class="r"><b>'+esc(p.n)+'</b>'+badge(s.l)+'</div>'+(p.i>0?'<div class="bar"><div style="width:'+Math.round(u*100)+'%;background:'+c+'"></div></div>':'')+'<div class="t2">'+info(p,s)+'</div>'+(s.l>0?offerHtml(p):'')+'<div class="r" style="margin-top:10px"><button class="sm" style="flex:1" onclick="troc('+x.i+')">Troquei agora</button><button class="sm" onclick="delP('+x.i+')">Remover</button></div></div>'});
+  $('lPecas').innerHTML=h||'<div class="t2">Lista vazia. Adicione a primeira peça abaixo.</div>'}
+function rMoto(){var m=manCalc(),h;
+  if(m.c==0)h='<div class="t2">Nenhuma peça tem custo cadastrado ainda.</div>';
+  else h='<div class="it"><div class="t2">Pelas '+m.c+' peças com custo cadastrado, a conta dá</div><b class="num" style="font-size:20px">'+brl(m.v).replace(',00','')+' por km</b> <span class="t2">('+m.v.toFixed(3).replace('.',',')+')</span><button class="btn" style="margin-top:10px" onclick="useMan()">Usar valor calculado</button></div>';
+  $('mCalc').innerHTML=h}
+function rOil(){var custom=M().oil&&(M().oil.marca||M().oil.visc),o=oilFor(),q=encodeURIComponent('manual do proprietário '+(M().mod||'moto')+' óleo capacidade pdf'),h;
+  if(custom)h='<div class="it"><b>Seu óleo cadastrado</b><div class="t2" style="margin-top:4px">'+esc([M().oil.marca,M().oil.visc].filter(Boolean).join(' '))+'</div></div>';
+  else if(o)h='<div class="it"><b>'+esc(o.n)+'</b><div class="t2" style="margin-top:4px">Óleo: '+esc(o.v)+'.<br>Quantidade: '+(o.l?esc(o.l):'ainda não confirmei o volume, veja no manual')+'.</div><div class="t2" style="margin-top:4px">Confira sempre no manual da sua moto e do seu ano.</div></div>';
+  else h='<div class="t2">'+(M().mod?'Ainda não verifiquei o óleo da '+esc(M().mod)+'.':'Digite o modelo acima, ou cadastre abaixo o óleo que você já usa.')+'</div>';
+  h+='<div class="lk"><a class="sm" target="_blank" rel="noopener noreferrer" href="https://www.google.com/search?q='+q+'">Buscar o manual</a><a class="sm" target="_blank" rel="noopener noreferrer" href="https://www.honda.com.br/motos/pos-venda">Manuais Honda</a></div>';
+  $('mOil').innerHTML=h}
+function rCmp(){var c=$('mCmp');if(M().comb!='flex'){c.innerHTML='';return}
+  var g=M().pg/cons('gas'),a=M().pa/cons('alc');if(!isFinite(g)||!isFinite(a)||g<=0||a<=0){c.innerHTML='';return}
+  c.innerHTML='<div class="it"><b>Custo por km</b><div class="t2" style="margin-top:4px">Gasolina: '+brl(g)+' por km · Álcool: '+brl(a)+' por km.<br><b>'+(a<g?'Hoje o álcool sai mais barato.':'Hoje a gasolina sai mais barata.')+'</b> Com seu consumo, o álcool compensa até '+Math.round(cons('alc')/cons('gas')*100)+'% do preço da gasolina.</div></div>'}
+function lnk(q){var e=encodeURIComponent(q),w='https://waze.com/ul?q='+e+(pos?'&ll='+pos.lat+','+pos.lng:'')+'&navigate=no',g='https://www.google.com/maps/search/'+e+(pos?'/@'+pos.lat+','+pos.lng+',14z':''),o='geo:'+(pos?pos.lat+','+pos.lng:'0,0')+'?q='+e;
+  return '<div class="lk"><a class="sm" target="_blank" rel="noopener noreferrer" href="'+w+'">Waze</a><a class="sm" target="_blank" rel="noopener noreferrer" href="'+g+'">Google Maps</a><a class="sm" href="'+o+'">Outro GPS</a></div>'}
+function rPerto(){$('pertoL').innerHTML=[['Postos de combustível','posto de combustível'],['Moto peças','loja de peças para moto'],['Borracharias','borracharia para moto'],['Oficina de moto','oficina de moto']].map(function(x){return '<div class="it"><b>'+x[0]+'</b>'+lnk(x[1])+'</div>'}).join('')}
+function rGas(){var t=tot(),h='';
+  S.gastos.forEach(function(i,k){var f=i.f=='mes'?'por mês':i.f=='semana'?'por semana':'por dia trabalhado',parcLine='';
+    if(i.parc){var ps=parcStatus(i);
+      parcLine='<div class="t2" style="margin-top:4px">Parcela '+i.parc.pagas+'/'+i.parc.total+' · vence todo dia '+i.parc.diaVenc+(ps&&ps.restantes>0?(' · '+(ps.diasFalta<=0?'vence agora':'faltam '+ps.diasFalta+' dias')):'')+'</div>'+(i.parc.pagas<i.parc.total?'<button class="sm" style="margin-top:6px" onclick="pagarParcela('+k+')">Paguei mais uma parcela</button>':'<div class="t2" style="margin-top:6px;color:var(--ok)">Quitada</div>')}
+    h+='<div class="it"><div class="r"><b>'+esc(i.n)+'</b><b class="num" style="font-size:18px">'+brl(i.v)+'</b></div><div class="r t2" style="margin-top:4px"><span>'+f+' · no mês: '+brl(itM(i,t.n))+'</span><button class="sm" onclick="delG('+k+')">Remover</button></div>'+parcLine+'</div>'});
+  $('lGas').innerHTML=h||'<div class="t2">Nenhum gasto cadastrado. Adicione aluguel, parcela, seguro e outros abaixo.</div>';
+  var a=[['Combustível',t.fu],['Manutenção estimada',t.man],['Outros gastos dos dias',t.av],['Seus gastos cadastrados',t.it]],b='';
+  a.forEach(function(x){b+='<div class="row"><span class="t2">'+x[0]+'</span><span>'+brl(x[1])+'</span></div>'});
+  b+='<div class="row" style="border-bottom:0;font-weight:600"><span>Total</span><span>'+brl(t.g)+'</span></div>';$('gl2').innerHTML=b;
+  $('rr2').innerHTML=rsvHtml(t)}
+function rGar(){$('garList').innerHTML=S.garagem.map(function(g,i){
+    return '<span class="garchip"><button type="button" class="chip'+(i===S.motoIdx?' on':'')+'" onclick="switchMoto('+i+')">'+esc(g.ap||('Moto '+(i+1)))+'</button>'+(S.garagem.length>1?'<button type="button" class="xbtn" onclick="delMoto('+i+')" aria-label="Remover moto">×</button>':'')+'</span>'}).join('')}
+function switchMoto(i){S.motoIdx=i;rGar();bindMotoInputs();upd()}
+function delMoto(i){if(S.garagem.length<=1)return;if(!confirm('Remover esta moto e tudo o que está cadastrado nela (peças, km, combustível)? Seus dias e gastos não são afetados.'))return;
+  S.garagem.splice(i,1);if(S.motoIdx>=S.garagem.length)S.motoIdx=S.garagem.length-1;rGar();bindMotoInputs();upd()}
+function upd(){if(M().mod){$('hMod').textContent=[M().mod,M().ano>0?M().ano:''].filter(Boolean).join(' · ')}
+  else{$('hMod').innerHTML='<button type="button" class="linklike" onclick="show(\'moto\')">Cadastrar o modelo da moto</button>'}
+  $('hAp').textContent=M().ap||'Minha moto';
+  $('hKm').textContent=Math.round(M().km).toLocaleString('pt-BR');
+  rRes();rDias();rPec();rGas();rMoto();rOil();rCmp();rFuel();rPerto();rDpm();rAlertas();save()}
+function delD(i){M().km=Math.max(0,M().km-S.dias[i].k);S.dias.splice(i,1);$('mKm').value=Math.round(M().km);upd()}
+function delP(i){M().pecas.splice(i,1);upd()}
+function delG(i){S.gastos.splice(i,1);upd()}
+function troc(i){M().pecas[i].u=Math.round(M().km);M().pecas[i].d='';upd()}
+function useMan(){M().manu=Math.round(manCalc().v*1000)/1000;$('mManu').value=M().manu;upd()}
+var MOTO_FIELDS=[['mAp','ap','s'],['mMod','mod','s'],['mAno','ano','n'],['mKm','km','n'],['mPg','pg','n'],['mPa','pa','n'],['mGmin','gmin','n'],['mGmax','gmax','n'],['mAmin','amin','n'],['mAmax','amax','n'],['mManu','manu','n']];
+function bindMotoInputs(){MOTO_FIELDS.forEach(function(b){var el=$(b[0]);el.value=M()[b[1]]||(b[2]=='s'?'':0);
+  el.oninput=function(){M()[b[1]]=b[2]=='s'?el.value:nv(el.value);if(b[1]==='ap')rGar();upd()}});
+  $('mOilMarca').value=(M().oil&&M().oil.marca)||'';$('mOilVisc').value=(M().oil&&M().oil.visc)||'';
+  $('mOilMarca').oninput=function(){M().oil=M().oil||{marca:'',visc:''};M().oil.marca=$('mOilMarca').value;rOil();save()};
+  $('mOilVisc').oninput=function(){M().oil=M().oil||{marca:'',visc:''};M().oil.visc=$('mOilVisc').value;rOil();save()}}
+$('bNovaMoto').onclick=function(){var n=$('novaMotoNome').value.trim();if(!n)return;S.garagem.push(Object.assign(defaultMoto(),{ap:n}));S.motoIdx=S.garagem.length-1;$('novaMotoNome').value='';rGar();bindMotoInputs();upd()};
+$('dChips').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;var p=b.getAttribute('data-p'),i=sel.indexOf(p);
+  if(i>-1)sel.splice(i,1);else{sel.push(p);if(!cur[p])cur[p]={g:0,n:0}}rForm()});
+$('dRows').addEventListener('input',function(e){var p=e.target.getAttribute('data-p'),k=e.target.getAttribute('data-k');if(p&&k&&cur[p])cur[p][k]=nv(e.target.value)});
+$('bNew').onclick=function(){var n=$('dNew').value.trim();if(!n)return;if(S.plats.indexOf(n)<0)S.plats.push(n);if(sel.indexOf(n)<0){sel.push(n);if(!cur[n])cur[n]={g:0,n:0}}$('dNew').value='';rForm();save()};
+$('dFt').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;S.fuelDia=b.getAttribute('data-f');upd()});
+$('mCb').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;M().comb=b.getAttribute('data-c');upd()});
+$('dHIni').addEventListener('input',updHoraCalc);$('dHFim').addEventListener('input',updHoraCalc);
+function updHoraCalc(){var h=calcHoras();$('dHoraCalc').textContent=h>0?('Tempo trabalhado: '+String(h).replace('.',',')+' h'):''}
+$('bDia').onclick=function(){var d=$('dData').value,k=nv($('dKm').value),pl={},any=0,h=calcHoras();
+  sel.forEach(function(p){pl[p]={g:cur[p].g||0,n:cur[p].n||0};any+=pl[p].g});
+  if(!d){$('eDia').textContent='Escolha a data do dia.';return}
+  if(!sel.length&&k<=0){$('eDia').textContent='Escolha ao menos uma plataforma ou informe os km.';return}
+  if(any<=0&&k<=0){$('eDia').textContent='Informe o ganho ou os km rodados.';return}
+  $('eDia').textContent='';
+  S.dias.push({d:d,h:h,k:k,e:nv($('dExt').value),a:nv($('dAv').value),fu:{t:dayT(),v:nv($('dFu').value)},pl:pl});
+  M().km+=k;$('mKm').value=Math.round(M().km);
+  $('dKm').value='';$('dFu').value='';$('dAv').value='0';$('dExt').value='0';$('dHIni').value='';$('dHFim').value='';$('dHoraCalc').textContent='';sel=[];cur={};rForm();upd()};
+$('bPeca').onclick=function(){var n=$('pNome').value.trim(),i=nv($('pInt').value),d=$('pData').value;
+  if(!n){$('ePeca').textContent='Digite o nome da peça.';return}
+  if(i<=0&&!d){$('ePeca').textContent='Informe a troca a cada quantos km ou um prazo em data.';return}
+  $('ePeca').textContent='';
+  M().pecas.push({n:n,u:i>0?(nv($('pUlt').value)||Math.round(M().km)):0,i:i,d:d,c:nv($('pCus').value),l:nv($('pLit').value)});
+  ['pNome','pInt','pUlt','pCus','pData','pLit'].forEach(function(x){$(x).value=''});upd()};
+var GASTOS_OPTS=['Aluguel da moto','Parcela da moto','Seguro','IPVA e licenciamento','Plano de celular','MEI','Comida','Lavagem','Outro'];
+var gSel='';
+$('gMenu').innerHTML=GASTOS_OPTS.map(function(o){return '<button type="button" class="mi" data-v="'+esc(o)+'">'+esc(o)+'</button>'}).join('');
+function gClose(){$('gMenu').style.display='none'}
+$('gNomeBtn').onclick=function(e){e.stopPropagation();var m=$('gMenu');m.style.display=m.style.display==='block'?'none':'block'};
+$('gMenu').addEventListener('click',function(e){var b=e.target.closest('.mi');if(!b)return;var v=b.getAttribute('data-v');gClose();
+  var btn=$('gNomeBtn');
+  if(v==='Outro'){gSel='';btn.classList.add('ph');$('gNomeTxt').textContent='Outro (digite abaixo)';$('gNomeOutro').style.display='block';$('gNomeOutro').focus()}
+  else{gSel=v;btn.classList.remove('ph');$('gNomeTxt').textContent=v;$('gNomeOutro').style.display='none';$('gNomeOutro').value=''}});
+document.addEventListener('click',function(e){if(!e.target.closest('#gNomeBtn')&&!e.target.closest('#gMenu'))gClose()});
+$('bGas').onclick=function(){var n=gSel||$('gNomeOutro').value.trim(),v=nv($('gVal').value);
+  if(!n){$('eGas').textContent='Escolha ou digite o nome do gasto.';return}
+  if(v<=0){$('eGas').textContent='Informe o valor.';return}
+  $('eGas').textContent='';
+  var g={n:n,v:v,f:$('gFre').value};
+  if(parcSel){var tot=Math.max(1,Math.round(nv($('gParcTot').value))||1),pg=Math.max(0,Math.round(nv($('gParcPg').value))),dia=Math.min(31,Math.max(1,Math.round(nv($('gParcDia').value))||1));
+    g.parc={total:tot,pagas:Math.min(pg,tot),diaVenc:dia}}
+  S.gastos.push(g);
+  gSel='';$('gNomeBtn').classList.add('ph');$('gNomeTxt').textContent='Toque para escolher';$('gNomeOutro').style.display='none';$('gNomeOutro').value='';$('gVal').value='';
+  parcSel=false;$('parcFields').style.display='none';document.querySelectorAll('#parcToggle button').forEach(function(x){x.classList.remove('on')});
+  ['gParcTot','gParcPg','gParcDia'].forEach(function(id){$(id).value=''});
+  upd()};
+var parcSel=false;
+function updParcToggle(){var mes=$('gFre').value==='mes';$('parcToggle').style.display=mes?'flex':'none';
+  if(!mes){parcSel=false;$('parcFields').style.display='none';document.querySelectorAll('#parcToggle button').forEach(function(x){x.classList.remove('on')})}}
+$('gFre').addEventListener('change',updParcToggle);
+$('parcToggle').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;parcSel=b.getAttribute('data-parc')==='sim';
+  document.querySelectorAll('#parcToggle button').forEach(function(x){x.classList.toggle('on',x===b)});$('parcFields').style.display=parcSel?'block':'none'});
+function bindTopInputs(){updParcToggle();$('rPer').value=S.res.per;$('rPer').onchange=function(){S.res.per=$('rPer').value;upd()};
+  [['rSaldo','res','saldo','n'],['rV','res','v','n'],['meta','','meta','n'],['dp','','dp','n']].forEach(function(b){
+    var el=$(b[0]),o=b[1]?S[b[1]]:S;el.value=o[b[2]]||(b[3]=='s'?'':0);
+    el.oninput=function(){o[b[2]]=b[3]=='s'?el.value:nv(el.value);upd()}})}
+$('dpmChips').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;S.dpMode=b.getAttribute('data-dpm');rDpm();upd()});
+$('pNome').addEventListener('input',function(){var o=oilFor(),h=$('pHint');h.textContent=(/[óo]leo/i.test($('pNome').value)&&(o||(M().oil&&(M().oil.marca||M().oil.visc))))?('Para a sua moto: '+(M().oil&&(M().oil.marca||M().oil.visc)?[M().oil.marca,M().oil.visc].filter(Boolean).join(' '):o.v+(o.l?'. Quantidade: '+o.l:'. Quantidade: veja no manual'))+'.'):''});
+function show(t){document.querySelectorAll('.pg').forEach(function(p){p.classList.toggle('on',p.getAttribute('data-p')===t)});
+  document.querySelectorAll('nav button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-t')===t)});window.scrollTo(0,0)}
+document.querySelectorAll('nav button').forEach(function(b){b.onclick=function(){show(b.getAttribute('data-t'))}});
+
+/* ===== localização (perto de você) ===== */
+$('bLoc').onclick=function(){
+  function ask(){$('locMsg').textContent='Pedindo a localização...';
+    navigator.geolocation.getCurrentPosition(function(p){pos={lat:p.coords.latitude.toFixed(5),lng:p.coords.longitude.toFixed(5)};$('locMsg').textContent='Localização obtida. Os links agora buscam perto de você.';rPerto()},
+      function(err){if(err&&err.code===1)$('locMsg').textContent='A localização está bloqueada para este site. Ative o GPS do celular e, nas permissões do navegador, permita a localização, depois toque de novo.';
+        else $('locMsg').textContent='Não consegui a localização agora. Os links funcionam mesmo assim, usando o local do celular.'},
+      {timeout:10000,maximumAge:60000})}
+  if(!navigator.geolocation){$('locMsg').textContent='Seu navegador não tem localização. Os links usam o local do celular.';return}
+  if(navigator.permissions&&navigator.permissions.query){
+    navigator.permissions.query({name:'geolocation'}).then(function(st){
+      if(st.state==='denied')$('locMsg').textContent='A localização está desligada para este site. Ligue o GPS e, nas permissões do navegador, permita a localização, depois toque de novo.';
+      else ask()
+    }).catch(ask)
+  } else ask()
+};
+
+/* ===== perfil (entregador ou só gestor de gastos) ===== */
+function applyProfile(){var isGestor=S.profile.tipo==='gestor';
+  document.querySelectorAll('nav button').forEach(function(b){var t=b.getAttribute('data-t');if(t==='dias'||t==='perto')b.style.display=isGestor?'none':'flex'});
+  $('rBlockEntregador').style.display=isGestor?'none':'block';
+  $('rBlockGestor').style.display=isGestor?'block':'none';
+  var curp=document.querySelector('.pg.on');
+  if(isGestor&&curp&&(curp.getAttribute('data-p')==='dias'||curp.getAttribute('data-p')==='perto'))show('resumo')}
+function showOnboard(){$('onboardModal').style.display='flex'}
+function closeOnboard(){$('onboardModal').style.display='none'}
+$('obSim').onclick=function(){S.profile.tipo='entregador';S.profile.onboarded=true;closeOnboard();applyProfile();upd()};
+$('obNao').onclick=function(){S.profile.tipo='gestor';S.profile.onboarded=true;closeOnboard();applyProfile();show('resumo');upd()};
+$('bTrocarPerfil').onclick=function(){showOnboard()};
+
+/* ===== login / conta ===== */
+function showAuth(err){$('authScreen').style.display='flex';$('app').style.display='none';$('authErr').textContent=err||''}
+function hideAuth(){$('authScreen').style.display='none';$('app').style.display='block'}
+function boot(){hideAuth();bindTopInputs();rForm();bindMotoInputs();rGar();applyProfile();$('dData').value=iso(new Date());show('resumo');updNotifUI();upd();checkReminders();
+  if(!S.profile.onboarded)showOnboard();else closeOnboard()}
+$('bEntrar').onclick=function(){var email=$('authEmail').value.trim().toLowerCase(),pw=$('authSenha').value;
+  if(!email||!pw){$('authErr').textContent='Preencha e-mail e senha.';return}
+  var accs=loadAccounts(),acc=accs.filter(function(a){return a.email===email})[0];
+  if(!acc||acc.hash!==hashPw(pw)){$('authErr').textContent='E-mail ou senha incorretos.';return}
+  CUR=email;try{localStorage.setItem(CUR_KEY,email)}catch(e){}
+  S=loadForEmail(email);boot()};
+$('bCriar').onclick=function(){var email=$('authEmail').value.trim().toLowerCase(),pw=$('authSenha').value;
+  if(!email||email.indexOf('@')<0){$('authErr').textContent='Digite um e-mail válido.';return}
+  if(pw.length<4){$('authErr').textContent='A senha precisa ter ao menos 4 caracteres.';return}
+  var accs=loadAccounts();
+  if(accs.some(function(a){return a.email===email})){$('authErr').textContent='Este e-mail já tem conta. Toque em Entrar.';return}
+  accs.push({email:email,hash:hashPw(pw)});saveAccounts(accs);
+  CUR=email;try{localStorage.setItem(CUR_KEY,email)}catch(e){}
+  S=loadForEmail(email);boot()};
+$('bLogout').onclick=function(){if(!confirm('Sair desta conta? Seus dados ficam salvos neste navegador para quando você entrar de novo.'))return;
+  CUR=null;try{localStorage.removeItem(CUR_KEY)}catch(e){}S=null;showAuth()};
+
+(function init(){var c=null;try{c=localStorage.getItem(CUR_KEY)}catch(e){}
+  if(c){var accs=loadAccounts();if(accs.some(function(a){return a.email===c})){CUR=c;S=loadForEmail(c);boot();return}}
+  showAuth()})();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('./sw.js').catch(function(){});
+  });
+}
+</script>
+</body>
+</html>
